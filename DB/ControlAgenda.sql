@@ -11,6 +11,13 @@ CREATE TABLE AccesoUsuarios (
     PRIMARY KEY (IdAccesoUsuario)
 );
 GO
+-- Create a new relational table with 3 columns
+
+CREATE TABLE Roles(
+  IdRol INT IDENTITY(1,1),
+  Rol VARCHAR(45) NOT NULL,
+  PRIMARY KEY (IdRol)
+);
 
 CREATE TABLE PerfilUsuarios (
     IdPerfilUsuario INT IDENTITY(1,1),
@@ -18,6 +25,7 @@ CREATE TABLE PerfilUsuarios (
     Apellidos VARCHAR(60) NOT NULL,
     Telefono VARCHAR(20) NOT NULL,
     IdAccesoUsuario INT NOT NULL,
+    IdRol INT NOT NULL,
     PRIMARY KEY (IdPerfilUsuario)
 );
 GO
@@ -104,9 +112,9 @@ GO
 CREATE TABLE EventosArchivados (
     IdEventoArchivado INT IDENTITY(1,1),
     IdEventoOriginal INT NOT NULL,
-    Competencia VARCHAR(200) NOT NULL,
-    ResultadoAprendizaje VARCHAR(200) NOT NULL,
-    Anotacion VARCHAR(200) NOT NULL,
+    Competencia TEXT NOT NULL,
+    ResultadoAprendizaje TEXT NOT NULL,
+    Anotacion TEXT NOT NULL,
     FechaInicio DATETIME NOT NULL,
     FechaFin DATETIME NOT NULL,
     IdEstadoEvento INT NOT NULL,
@@ -119,7 +127,9 @@ CREATE TABLE EventosArchivados (
 -- Foreign Keys
 ALTER TABLE PerfilUsuarios
 ADD CONSTRAINT FK_PerfilUsuarios_AccesoUsuarios 
-FOREIGN KEY (IdAccesoUsuario) REFERENCES AccesoUsuarios(IdAccesoUsuario) ON DELETE CASCADE;
+FOREIGN KEY (IdAccesoUsuario) REFERENCES AccesoUsuarios(IdAccesoUsuario) ON DELETE CASCADE,
+CONSTRAINT FK_PerfilUsuario_Roles
+FOREIGN KEY (IdRol) REFERENCES Roles(IdRol) ON DELETE CASCADE;
 GO
 
 ALTER TABLE FichasFormacion
